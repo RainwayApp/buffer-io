@@ -1,6 +1,10 @@
 [package]
 name = "buffer_io"
 version = "1.0.0"
+description = "an intuitive library for reading and writing binary buffers."
+homepage = "https://rainway.com"
+license = "MIT"
+repository = "https://github.com/RainwayApp/buffer-io"
 authors = ["Andrew Sampson <andrew@rainway.com>"]
 edition = "2018"
 categories = ["encoding", "parsing"]

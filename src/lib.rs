@@ -54,7 +54,7 @@ pub mod buffer {
             }
             Ok(len)
         }
-        pub fn to_array(&mut self) -> Result<Vec<u8>, BufferError> {
+        pub fn to_vec(&mut self) -> Result<Vec<u8>, BufferError> {
             let mut out: Vec<u8> = vec![];
             self.seek(0, SeekOrigin::Begin)?;
             self.writer.read_to_end(&mut out).unwrap();
@@ -392,7 +392,7 @@ mod tests {
         buffer.write_string("Hello World!".to_string()).unwrap();
         buffer.seek(0, SeekOrigin::Begin).unwrap();
         buffer.write_u32(9003).unwrap();
-        let data = buffer.to_array().unwrap();
+        let data = buffer.to_vec().unwrap();
         let mut reader = BufferReader::new(Cursor::new(data));
         assert_eq!(9003, reader.read_u32().unwrap());
         assert_eq!(9002, reader.read_u32().unwrap());
