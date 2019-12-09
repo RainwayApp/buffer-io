@@ -1,0 +1,13 @@
+[package]
+name = "buffer_io"
+version = "1.0.0"
+authors = ["Andrew Sampson <andrew@rainway.com>"]
+edition = "2018"
+categories = ["encoding", "parsing"]
+keywords = ["buffer", "binary", "reader", "writer", "byte", "endian", "little-endian"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+failure = "0.1.6"
+failure_derive = "0.1.6"
