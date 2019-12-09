@@ -1,5 +1,18 @@
 This crate provides convenience methods for reading and writing data to binary buffers. It supports writing primitive types, as well as Strings and Vectors to in-memory streams and files.
 
+
+### Installation
+
+This crate works with Cargo and is on
+[crates.io](https://crates.io/crates/buffer_io). Add it to your `Cargo.toml`
+like so:
+
+```toml
+[dependencies]
+buffer_io = "1"
+```
+
+
 If you want to write data to a buffer you do it like so:
 ```rust
 use crate::buffer::{BufferReader, BufferWriter, SeekOrigin};
