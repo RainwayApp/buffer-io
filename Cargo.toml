@@ -1,6 +1,6 @@
 [package]
 name = "buffer_io"
-version = "1.0.1"
+version = "1.0.2"
 description = "an intuitive library for reading and writing binary buffers."
 homepage = "https://rainway.com"
 license = "MIT"
@@ -13,3 +13,4 @@ keywords = ["buffer", "binary", "reader", "writer", "byte"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+err-derive = "0.2.4"

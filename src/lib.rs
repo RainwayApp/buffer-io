@@ -360,11 +360,18 @@ pub mod buffer {
         }
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, err_derive::Error)]
     pub enum BufferError {
+        #[error(
+            display = "seek index ({}) was out of range. Must be non-negative and less than the size of the collection.",
+            index
+        )]
         IndexOutOfRange { index: i64 },
+        #[error(display = "attempted to read past the end of a stream.")]
         EndOfStream,
+        #[error(display = "unable to read bytes from buffer: {:?}", error)]
         ReadFailure { error: Error },
+        #[error(display = "unable to write data to buffer.")]
         IOFailure,
     }
 }
