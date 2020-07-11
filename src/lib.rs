@@ -1,5 +1,4 @@
 #[macro_use]
-extern crate failure;
 pub mod buffer {
     use std::io::Error;
     use std::io::{Read, Seek, SeekFrom, Write};
@@ -361,21 +360,11 @@ pub mod buffer {
         }
     }
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug)]
     pub enum BufferError {
-        #[fail(
-            display = "seek index ({}) was out of range. Must be non-negative and less than the size of the collection.",
-            index
-        )]
         IndexOutOfRange { index: i64 },
-
-        #[fail(display = "attempted to read past the end of a stream.")]
         EndOfStream,
-
-        #[fail(display = "unable to read bytes from buffer: {:?}", error)]
         ReadFailure { error: Error },
-
-        #[fail(display = "unable to write data to buffer.")]
         IOFailure,
     }
 }
