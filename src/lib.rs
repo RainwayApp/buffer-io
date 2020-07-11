@@ -1,8 +1,6 @@
 #[macro_use]
 pub mod buffer {
-    use std::io::Error;
     use std::io::{Read, Seek, SeekFrom, Write};
-
     /// Specifies the position in a stream to use for seeking.
     #[derive(PartialEq)]
     pub enum SeekOrigin {
@@ -252,7 +250,7 @@ pub mod buffer {
             let mut buffer = [0u8; 4];
             self.reader
                 .read_exact(&mut buffer)
-                .map_err(|e| BufferError::ReadFailure { error: e })
+                .map_err(|e| BufferError::ReadFailure(e))
                 .map(|_b| {
                     ((buffer[0] as u32) << 0)
                         | ((buffer[1] as u32) << 8)
@@ -271,7 +269,7 @@ pub mod buffer {
             let mut buffer = vec![0u8; 8];
             self.reader
                 .read_exact(&mut buffer)
-                .map_err(|e| BufferError::ReadFailure { error: e })
+                .map_err(|e| BufferError::ReadFailure(e))
                 .map(|_b| {
                     let lo = (buffer[0] as u32)
                         | (buffer[1] as u32) << 8
@@ -296,7 +294,7 @@ pub mod buffer {
             let mut buffer = [0u8; 4];
             self.reader
                 .read_exact(&mut buffer)
-                .map_err(|e| BufferError::ReadFailure { error: e })
+                .map_err(|e| BufferError::ReadFailure(e))
                 .map(|_b| {
                     ((buffer[0] as i32) << 0)
                         | ((buffer[1] as i32) << 8)
@@ -315,7 +313,7 @@ pub mod buffer {
             let mut buffer = [0u8; 2];
             self.reader
                 .read_exact(&mut buffer)
-                .map_err(|e| BufferError::ReadFailure { error: e })
+                .map_err(|e| BufferError::ReadFailure(e))
                 .map(|_b| (buffer[0] as u16) | (buffer[1] as u16))
         }
 
@@ -329,7 +327,7 @@ pub mod buffer {
             let mut buffer = [0u8; 1];
             self.reader
                 .read_exact(&mut buffer)
-                .map_err(|e| BufferError::ReadFailure { error: e })
+                .map_err(|e| BufferError::ReadFailure(e))
                 .map(|_b| buffer[0])
         }
 
@@ -342,7 +340,7 @@ pub mod buffer {
             let mut buffer = vec![0u8; count as usize];
             self.reader
                 .read_exact(&mut buffer)
-                .map_err(|e| BufferError::ReadFailure { error: e })
+                .map_err(|e| BufferError::ReadFailure(e))
                 .map(|_b| buffer)
         }
 
@@ -360,18 +358,15 @@ pub mod buffer {
         }
     }
 
-    #[derive(Debug, err_derive::Error)]
+    #[derive(Debug, thiserror::Error)]
     pub enum BufferError {
-        #[error(
-            display = "seek index ({}) was out of range. Must be non-negative and less than the size of the collection.",
-            index
-        )]
+        #[error("seek index ({index}) was out of range. Must be non-negative and less than the size of the collection.")]
         IndexOutOfRange { index: i64 },
-        #[error(display = "attempted to read past the end of a stream.")]
+        #[error("attempted to read past the end of a stream.")]
         EndOfStream,
-        #[error(display = "unable to read bytes from buffer: {:?}", error)]
-        ReadFailure { error: Error },
-        #[error(display = "unable to write data to buffer.")]
+        #[error("unable to read bytes from buffer: {0:?}")]
+        ReadFailure(#[from] std::io::Error),
+        #[error("unable to write data to buffer.")]
         IOFailure,
     }
 }
